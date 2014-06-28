@@ -7,6 +7,7 @@
 //
 
 #import "FirstViewController.h"
+#import "TwitterLoginProxy.h"
 
 @interface FirstViewController ()
 
@@ -14,16 +15,16 @@
 
 @implementation FirstViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)getMyInfo:(id)sender {
+    [TwitterLoginProxy loginWithSuccessHandler:^(STTwitterAPI *twitter, NSString *screenName) {
+        [twitter getUserInformationFor:screenName successBlock:^(NSDictionary *user) {
+            NSLog(@"%@", user);
+        } errorBlock:^(NSError *error) {
+            NSLog(@"%@", error);
+        }];
+    } errorHandler:^(NSError *error) {
+        
+    }];
 }
 
 @end
